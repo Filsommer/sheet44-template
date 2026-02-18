@@ -3,8 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 type ServiceCategory =
@@ -93,30 +92,32 @@ const categories: ServiceCategory[] = [
   "User Insights",
 ];
 
-function categoryId(category: ServiceCategory): string {
-  return `category-${category.toLowerCase().replace(/\s+/g, "-")}`;
-}
-
 export default function ServicesPage() {
-  const [allSelected, setAllSelected] = React.useState(true);
   const [selectedCategories, setSelectedCategories] = React.useState<ServiceCategory[]>(categories);
+  const allSelected = selectedCategories.length === categories.length;
 
   const filteredServices = allSelected
     ? services
     : services.filter((service) => selectedCategories.includes(service.category));
 
-  function toggleAll(checked: boolean) {
-    setAllSelected(checked);
-    setSelectedCategories(checked ? categories : []);
+  function selectAll() {
+    setSelectedCategories(categories);
   }
 
-  function toggleCategory(category: ServiceCategory, checked: boolean) {
-    const next = checked
-      ? [...new Set([...selectedCategories, category])]
-      : selectedCategories.filter((item) => item !== category);
+  function toggleCategory(category: ServiceCategory) {
+    if (allSelected) {
+      setSelectedCategories([category]);
+      return;
+    }
 
-    setSelectedCategories(next);
-    setAllSelected(next.length === categories.length);
+    const isSelected = selectedCategories.includes(category);
+    if (isSelected) {
+      const next = selectedCategories.filter((item) => item !== category);
+      setSelectedCategories(next.length === 0 ? categories : next);
+      return;
+    }
+
+    setSelectedCategories([...selectedCategories, category]);
   }
 
   return (
@@ -139,27 +140,34 @@ export default function ServicesPage() {
       <Card>
         <CardHeader>
           <CardTitle>Filter by capability</CardTitle>
-          <CardDescription>Default view is All. Uncheck to focus on specific areas.</CardDescription>
+          <CardDescription>
+            All is selected by default. Click categories to filter one or multiple capabilities.
+          </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-wrap items-center gap-4">
-          <div className="flex items-center gap-2">
-            <Checkbox
-              checked={allSelected}
-              onCheckedChange={(checked) => toggleAll(checked === true)}
-              id="all-categories"
-            />
-            <Label htmlFor="all-categories">All</Label>
-          </div>
+          <Button
+            type="button"
+            variant={allSelected ? "default" : "outline"}
+            size="sm"
+            className="rounded-full"
+            onClick={selectAll}
+            aria-pressed={allSelected}
+          >
+            All
+          </Button>
 
           {categories.map((category) => (
-            <div key={category} className="flex items-center gap-2">
-              <Checkbox
-                checked={selectedCategories.includes(category)}
-                onCheckedChange={(checked) => toggleCategory(category, checked === true)}
-                id={categoryId(category)}
-              />
-              <Label htmlFor={categoryId(category)}>{category}</Label>
-            </div>
+            <Button
+              key={category}
+              type="button"
+              variant={selectedCategories.includes(category) && !allSelected ? "default" : "outline"}
+              size="sm"
+              className="rounded-full"
+              onClick={() => toggleCategory(category)}
+              aria-pressed={selectedCategories.includes(category) && !allSelected}
+            >
+              {category}
+            </Button>
           ))}
         </CardContent>
       </Card>

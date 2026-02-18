@@ -124,3 +124,34 @@
     @apply bg-background text-foreground;
   }
 }
+
+.hero-image-drift {
+  animation: hero-image-drift 10s ease-in-out infinite;
+  transform-origin: center;
+  will-change: transform;
+}
+
+@keyframes hero-image-drift {
+  0% {
+    transform: scale(1.12) translate3d(-2%, -1%, 0) rotate(-1deg);
+  }
+  25% {
+    transform: scale(1.15) translate3d(0.5%, 1%, 0) rotate(0.6deg);
+  }
+  50% {
+    transform: scale(1.16) translate3d(1.6%, 1.2%, 0) rotate(1deg);
+  }
+  75% {
+    transform: scale(1.14) translate3d(1%, -1.2%, 0) rotate(-0.5deg);
+  }
+  100% {
+    transform: scale(1.12) translate3d(-2%, -1%, 0) rotate(-1deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-image-drift {
+    animation: none;
+    transform: scale(1.12);
+  }
+}

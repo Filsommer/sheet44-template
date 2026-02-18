@@ -1,12 +1,6 @@
 import Link from "next/link";
 import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  ArrowRight01Icon,
-  BarChartIcon,
-  BluetoothIcon,
-  PlusSignIcon,
-  WebProgrammingIcon,
-} from "@hugeicons/core-free-icons";
+import { ArrowRight01Icon, BubbleChatQuestionIcon } from "@hugeicons/core-free-icons";
 import {
   Card,
   CardContent,
@@ -16,20 +10,24 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { LandingStartBuildingCard } from "@/components/landing-start-building-card";
+import { BarChartBreakdown } from "@/components/ui/breakdown-chart";
+import { BarChartMultiVertical } from "@/components/ui/bar-chart";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogMedia,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Badge } from "@/components/ui/badge";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+const starterIdeas = [
+  "Schedule actions (e.g. every two weeks, trade BTC if it is below 100k).",
+  "Create alerts (send a daily email with a summary of the biggest news in the S&P 500).",
+  "Rebalance portfolio targets automatically by risk profile.",
+  "Track favorite assets and get notified when volatility spikes.",
+];
 
 export default function Page() {
   return (
@@ -85,13 +83,9 @@ export default function Page() {
 
         <section className="grid w-full gap-4 md:grid-cols-3">
           <Card className="relative w-full max-w-sm overflow-hidden pt-0">
-            <div className="bg-primary absolute inset-0 z-30 h-32 opacity-50 mix-blend-color" />
-            <img
-              src="https://images.unsplash.com/photo-1604076850742-4c7221f3101b?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="Photo by mymind on Unsplash"
-              title="Photo by mymind on Unsplash"
-              className="relative z-20 h-32 w-full object-cover brightness-60 grayscale"
-            />
+            <div className="pt-4 h-24">
+              <BarChartMultiVertical />
+            </div>
             <CardHeader>
               <CardTitle>See available eToro data</CardTitle>
               <CardDescription>
@@ -99,25 +93,36 @@ export default function Page() {
                 currently exposed by the eToro API.
               </CardDescription>
             </CardHeader>
+            <CardFooter className="mt-auto">
+              <Link href="/services" className="w-full">
+                <Button className="w-full" variant="secondary">
+                  View available data
+                  <HugeiconsIcon icon={ArrowRight01Icon} size={18} className="ml-1" />
+                </Button>
+              </Link>
+            </CardFooter>
           </Card>
 
           <Card className="relative w-full max-w-sm overflow-hidden pt-0">
-            <div className="bg-primary absolute inset-0 z-30 h-32 opacity-50 mix-blend-color" />
-            <img
-              src="https://images.unsplash.com/photo-1604076850742-4c7221f3101b?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="Photo by mymind on Unsplash"
-              title="Photo by mymind on Unsplash"
-              className="relative z-20 h-32 w-full object-cover brightness-60 grayscale"
-            />
+            <div className="relative h-24 w-full overflow-hidden">
+              <div className="bg-primary absolute inset-0 z-30  opacity-50 mix-blend-color" />
+              <img
+                src="https://images.unsplash.com/photo-1604076850742-4c7221f3101b?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                alt="Photo by mymind on Unsplash"
+                title="Photo by mymind on Unsplash"
+                className="hero-image-drift relative z-20 w-full object-cover brightness-70 grayscale"
+              />
+            </div>
             <CardHeader>
               <CardTitle>See available app functionalities</CardTitle>
               <CardDescription>
-                Explore product-ready capabilities in plain language, organized by category.
+                Explore product-ready capabilities in plain language, such as alerts, workflows, and
+                automations.
               </CardDescription>
             </CardHeader>
             <CardFooter className="mt-auto">
               <Link href="/services" className="w-full">
-                <Button className="w-full">
+                <Button className="w-full" variant="secondary">
                   View functionalities
                   <HugeiconsIcon icon={ArrowRight01Icon} size={18} className="ml-1" />
                 </Button>
@@ -125,10 +130,48 @@ export default function Page() {
             </CardFooter>
           </Card>
 
-          <LandingStartBuildingCard />
+          <Dialog>
+            <Card className="relative w-full max-w-sm overflow-hidden pt-0">
+              <div className="px-4 pt-8 h-24">
+                <BarChartBreakdown />
+              </div>
+              <CardHeader className="">
+                <CardTitle>Start building</CardTitle>
+                <CardDescription>
+                  Start from a pre-built chart and turn it into workflows, alerts, and automations.
+                </CardDescription>
+              </CardHeader>
+              <CardFooter className="mt-auto">
+                <DialogTrigger render={<Button className="w-full" variant="secondary" />}>
+                  Start Building{" "}
+                  <HugeiconsIcon icon={BubbleChatQuestionIcon} size={18} className="ml-1" />
+                </DialogTrigger>
+              </CardFooter>
+            </Card>
+
+            <DialogContent className="max-w-2xl">
+              <DialogHeader>
+                <DialogTitle>Ideas to start quickly</DialogTitle>
+                <DialogDescription>
+                  Pick one workflow and ship a first version today. These are non-technical examples
+                  you can customize.
+                </DialogDescription>
+              </DialogHeader>
+
+              <ul className="space-y-3 text-sm">
+                {starterIdeas.map((idea) => (
+                  <li key={idea} className="bg-muted/50 rounded-lg border px-3 py-2">
+                    {idea}
+                  </li>
+                ))}
+              </ul>
+
+              <DialogFooter showCloseButton />
+            </DialogContent>
+          </Dialog>
         </section>
 
-        <p className="text-muted-foreground text-sm">Built with 💚 by eToro</p>
+        <p className="text-muted-foreground text-sm mt-10">Built with 💚 by eToro</p>
       </main>
     </div>
   );
