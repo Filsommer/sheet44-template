@@ -1,10 +1,12 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowLeft01Icon } from "@hugeicons/core-free-icons";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { TransitionLink } from "@/components/transition-link";
 
 type ServiceCategory =
   | "Market Data"
@@ -24,7 +26,8 @@ const services: ServiceItem[] = [
   {
     title: "Search markets quickly",
     category: "Market Data",
-    summary: "Find assets by name or ticker and get key details to power watchlists and dashboards.",
+    summary:
+      "Find assets by name or ticker and get key details to power watchlists and dashboards.",
   },
   {
     title: "Get live prices",
@@ -39,7 +42,8 @@ const services: ServiceItem[] = [
   {
     title: "Manage watchlists",
     category: "Watchlists",
-    summary: "Create, rename, rank, and organize watchlists so users can monitor what matters most.",
+    summary:
+      "Create, rename, rank, and organize watchlists so users can monitor what matters most.",
   },
   {
     title: "Manage watchlist items",
@@ -121,20 +125,22 @@ export default function ServicesPage() {
   }
 
   return (
-    <main className="mx-auto min-h-screen w-full max-w-6xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
-      <header className="space-y-2">
-        <p className="text-muted-foreground text-sm">
-          <Link href="/" className="hover:text-foreground">
-            Home
-          </Link>
-          {" / "}
-          <span className="text-foreground">Services</span>
-        </p>
-        <h1 className="text-primary text-3xl font-bold">Available app functionalities</h1>
-        <p className="max-w-3xl text-sm text-muted-foreground">
-          This page summarizes what your app can do using eToro capabilities, written for product
-          and business teams.
-        </p>
+    <main className="route-fade mx-auto min-h-screen w-full max-w-6xl space-y-6 px-4 py-12 sm:px-6 lg:px-8">
+      <header className="flex flex-col gap-4">
+        <TransitionLink href="/" className="w-fit block pb-2">
+          <Button variant="secondary">
+            <HugeiconsIcon icon={ArrowLeft01Icon} size={18} className="mr-1" />
+            Back to home
+          </Button>
+        </TransitionLink>
+
+        <div className="space-y-2">
+          <h1 className="text-3xl font-bold font-mono tracking-wide">Available eToro Data</h1>
+          <p className="text-muted-foreground max-w-3xl text-sm">
+            Explore product-ready capabilities powered by eToro services, written in plain language
+            for business and product teams.
+          </p>
+        </div>
       </header>
 
       <Card>
@@ -160,7 +166,9 @@ export default function ServicesPage() {
             <Button
               key={category}
               type="button"
-              variant={selectedCategories.includes(category) && !allSelected ? "default" : "outline"}
+              variant={
+                selectedCategories.includes(category) && !allSelected ? "default" : "outline"
+              }
               size="sm"
               className="rounded-full"
               onClick={() => toggleCategory(category)}

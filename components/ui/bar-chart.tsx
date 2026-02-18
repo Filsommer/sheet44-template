@@ -34,7 +34,7 @@ export function BarChartMultiVertical() {
     .range([100, 0]);
 
   // Generate an array of colors for the bars
-  const colors = ["#0EB12E", "#90E58999"];
+  const colors = ["bg-[#0EB12E]", "bg-lime-300 dark:bg-lime-900 border border-primary/20"];
 
   return (
     <div
@@ -78,14 +78,14 @@ export function BarChartMultiVertical() {
                 return (
                   <div
                     key={barIndex}
-                    className="absolute bottom-0 rounded-t"
-                    style={{
-                      left: `${barXPosition}%`,
-                      width: `${barWidth}%`,
-                      height: `${barHeight}%`,
-                      backgroundColor: colors[barIndex % colors.length],
-                      border: `1px solid #a07dff22`,
-                    }}
+                    className={`absolute bottom-0 rounded-t ${colors[barIndex % colors.length]}`}
+                    style={
+                      {
+                        left: `${barXPosition}%`,
+                        width: `${barWidth}%`,
+                        height: `${barHeight}%`,
+                      } as CSSProperties
+                    }
                   />
                 );
               })}

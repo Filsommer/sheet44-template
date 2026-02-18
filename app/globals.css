@@ -89,7 +89,7 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.21 0.006 285.885);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.648 0.2 131.684);
+  --primary: oklch(0.548 0.2 131.684);
   --primary-foreground: oklch(0.986 0.031 120.757);
   --secondary: oklch(0.274 0.006 286.033);
   --secondary-foreground: oklch(0.985 0 0);
@@ -153,5 +153,48 @@
   .hero-image-drift {
     animation: none;
     transform: scale(1.12);
+  }
+}
+
+@supports (view-transition-name: none) {
+  .route-fade {
+    view-transition-name: route-fade;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-old(route-fade) {
+    animation: route-fade-out 180ms ease-in both;
+  }
+
+  ::view-transition-new(root),
+  ::view-transition-new(route-fade) {
+    animation: route-fade-in 220ms ease-out both;
+  }
+}
+
+@keyframes route-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes route-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-old(route-fade),
+  ::view-transition-new(route-fade) {
+    animation: none;
   }
 }

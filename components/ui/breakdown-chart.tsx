@@ -27,10 +27,12 @@ export function BarChartBreakdown() {
   const gap = 0.5; // gap between bars
   const totalValue = data.reduce((acc, d) => acc + d.value, 0);
   const barHeight = 44;
+  const stairStep = 8;
+  const chartHeight = barHeight + stairStep * (data.length - 1);
   const totalWidth = totalValue + gap * (data.length - 1);
   let cumulativeWidth = 0;
 
-  const cornerRadius = 4; // Adjust this value to change the roundness
+  const cornerRadius = 8; // Adjust this value to change the roundness
 
   return (
     <div
@@ -41,7 +43,7 @@ export function BarChartBreakdown() {
           "--marginRight": "0px",
           "--marginBottom": "0px",
           "--marginLeft": "0px",
-          "--height": `${barHeight}px`,
+          "--height": `${chartHeight}px`,
         } as CSSProperties
       }
     >
@@ -69,6 +71,7 @@ export function BarChartBreakdown() {
                 width: `${barWidth}%`,
                 height: `${barHeight}px`,
                 left: `${xPosition}%`,
+                top: `${index * stairStep}px`,
                 position: "absolute",
               }}
             >
@@ -83,7 +86,7 @@ export function BarChartBreakdown() {
               <div
                 style={{
                   position: "absolute",
-                  top: `${barHeight / 8}px`,
+                  top: `${barHeight / 4}px`,
                   left: "50%",
                   transform: "translateX(-50%)",
                   color: "white",
@@ -107,7 +110,7 @@ export function BarChartBreakdown() {
                   fontFamily: "monospace",
                 }}
               >
-                {d.value}
+                {/* {d.value} */}
               </div>
             </div>
           );
