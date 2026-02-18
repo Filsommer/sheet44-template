@@ -1,64 +1,134 @@
-import Image from "next/image";
+import Link from "next/link";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  ArrowRight01Icon,
+  BarChartIcon,
+  BluetoothIcon,
+  PlusSignIcon,
+  WebProgrammingIcon,
+} from "@hugeicons/core-free-icons";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { LandingStartBuildingCard } from "@/components/landing-start-building-card";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogMedia,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Badge } from "@/components/ui/badge";
 
-export default function Home() {
+export default function Page() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="bg-background flex min-h-screen flex-col items-center justify-center px-4 py-12">
+      <main className="flex w-full max-w-4xl flex-col items-center gap-8">
+        {/* <div
+          className="bg-primary/10 flex h-14 w-14 shrink-0 items-center justify-center rounded-full"
+          aria-hidden
+        >
+          <HugeiconsIcon icon={WebProgrammingIcon} size={28} className="text-primary" />
+        </div> */}
+
+        <div className="flex flex-col items-center gap-3 text-center">
+          <div className="relative w-40 h-full mx-auto flex items-center justify-center">
+            <svg version="1.1" viewBox="0 0 156 49" xmlns="http://www.w3.org/2000/svg">
+              <title>eToro</title>
+              <path
+                className="logoColor"
+                d="m155.7 18.1c-0.9-3.4-7.9-11.2-13-17.5-0.1-0.1-0.4-0.6-1-0.6-0.5 0-0.9 0.5-0.7 0.9s5.1 10.6 4.2 13.9c-0.9 3.4-5.4 2.7-6.1 2.7-0.4 0-0.1 0.3 0.3 0.7 2.5 2.2 4.1 5.3 4.1 9.3v3c0 0.1 0 0.1 0.1 0.1 5.7-0.5 14.4-4 12.1-12.5"
+              ></path>
+              <path
+                className="logoColor"
+                d="m133.6 37.8c0 2.9-3.9 4.5-6.4 4.5-2.7 0-6.5-1.6-6.5-4.5v-10.2c0-2.9 3.8-4.2 6.5-4.2 2.5 0 6.4 1.4 6.4 4.2v10.2zm-6.4-20.8c-6 0.1-13 3.5-13 10.5v10.7c0 7.1 7 10.5 13 10.5 5.9-0.1 12.9-3.4 12.9-10.5v-10.6c0-7-7-10.5-12.9-10.6"
+              ></path>
+              <path
+                className="logoColor"
+                d="m88.4 37.8c0 2.9-3.9 4.5-6.4 4.5-2.7 0-6.5-1.6-6.5-4.5v-10.2c0-2.9 3.8-4.2 6.5-4.2 2.5 0 6.4 1.4 6.4 4.2v10.2zm-6.5-20.8c-6 0.1-13 3.5-13 10.5v10.7c0 7.1 7 10.5 13 10.5 5.9-0.1 12.9-3.4 12.9-10.5v-10.6c0-7-7-10.5-12.9-10.6"
+              ></path>
+              <path
+                className="logoColor"
+                d="m16.7 18.2c0.4-0.4 0.7-0.7 0.3-0.7-0.7 0-5.2 0.7-6.1-2.7s4-13.5 4.2-13.9c0.1-0.4-0.2-0.9-0.8-0.9-0.5 0-0.9 0.6-1 0.6-5 6.3-12.1 14.1-13 17.5-2.3 8.5 6.6 12 12.2 12.6 0.1 0 0.1-0.1 0.1-0.1v-3c0.1-4.1 1.6-7.2 4.1-9.4"
+              ></path>
+              <path
+                className="logoColor"
+                d="m68.5 19.4c-4.8-1.3-8.3-1.8-13.5-1.8-5.1 0-8.7 0.5-13.5 1.8-0.2 0.1-0.3 0.3-0.2 0.4 1.6 1.4 2.3 3.2 2.6 5.2 2.6-0.6 5-1 7.8-1.2v24.7c0 0.1 0.1 0.1 0.2 0.1h6.2c0.1 0 0.2 0 0.2-0.1v-24.7c2.7 0.2 4.9 0.5 7.5 1.2 0.4-2 1.2-3.9 2.9-5.2 0-0.2-0.1-0.4-0.2-0.4"
+              ></path>
+              <path
+                className="logoColor"
+                d="m114.4 17.3c-0.5-0.1-1.8-0.3-3-0.2-5.9 0.2-12.6 3.7-12.6 10.5v21.1c0 0.1 0.1 0.1 0.2 0.1h6.2c0.1 0 0.2 0 0.2-0.1v-21.1c0-2.3 2.8-3.6 5.1-4.1 0.7-2.2 2-3.9 4-5.5 0.3-0.3 0.2-0.7-0.1-0.7"
+              ></path>
+              <path
+                className="logoColor"
+                d="m34.6 29.4c0 0.1 0 0.1-0.1 0.2 0 0.1-0.1 0.1-0.2 0.1h-11.8v-2.1c0-2.9 3.5-4.3 6.2-4.3 2.6 0 5.9 1.4 5.9 4.3v1.8zm-5.9-12.6c-6.1 0.1-12.8 3.6-12.8 10.7v10.8c0 7.2 6.7 10.6 12.8 10.7 4.4 0 9.3-1.8 11.7-5.7 0.1-0.1 0-0.3-0.1-0.4-2.1-1.2-3.3-1.9-5.4-3-0.1 0-0.1 0-0.2 0.1-1.1 1.9-4 2.9-6 2.9-2.7 0-6.2-1.7-6.2-4.6v-3.2h16.9c0.9 0 1.6-0.7 1.6-1.6v-5.9c0-7.2-6.3-10.7-12.3-10.8"
+              ></path>
+            </svg>
+          </div>
+          <h1 className="text-3xl font-bold font-mono tracking-wide">AI Boilerplate</h1>
+          <p className="text-muted-foreground text-base leading-relaxed">
+            Build your custom eToro portfolio management application with in-house services and
+            reusable UI building blocks.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+
+        <section className="grid w-full gap-4 md:grid-cols-3">
+          <Card className="relative w-full max-w-sm overflow-hidden pt-0">
+            <div className="bg-primary absolute inset-0 z-30 h-32 opacity-50 mix-blend-color" />
+            <img
+              src="https://images.unsplash.com/photo-1604076850742-4c7221f3101b?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt="Photo by mymind on Unsplash"
+              title="Photo by mymind on Unsplash"
+              className="relative z-20 h-32 w-full object-cover brightness-60 grayscale"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+            <CardHeader>
+              <CardTitle>See available eToro data</CardTitle>
+              <CardDescription>
+                Browse our market data, Pro Investor universe, trading information, and much more -
+                currently exposed by the eToro API.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+
+          <Card className="relative w-full max-w-sm overflow-hidden pt-0">
+            <div className="bg-primary absolute inset-0 z-30 h-32 opacity-50 mix-blend-color" />
+            <img
+              src="https://images.unsplash.com/photo-1604076850742-4c7221f3101b?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt="Photo by mymind on Unsplash"
+              title="Photo by mymind on Unsplash"
+              className="relative z-20 h-32 w-full object-cover brightness-60 grayscale"
+            />
+            <CardHeader>
+              <CardTitle>See available app functionalities</CardTitle>
+              <CardDescription>
+                Explore product-ready capabilities in plain language, organized by category.
+              </CardDescription>
+            </CardHeader>
+            <CardFooter className="mt-auto">
+              <Link href="/services" className="w-full">
+                <Button className="w-full">
+                  View functionalities
+                  <HugeiconsIcon icon={ArrowRight01Icon} size={18} className="ml-1" />
+                </Button>
+              </Link>
+            </CardFooter>
+          </Card>
+
+          <LandingStartBuildingCard />
+        </section>
+
+        <p className="text-muted-foreground text-sm">Built with 💚 by eToro</p>
       </main>
     </div>
   );
