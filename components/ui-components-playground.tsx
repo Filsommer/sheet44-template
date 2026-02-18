@@ -107,7 +107,7 @@ export function UiComponentsPlayground() {
               </div>
             </TabsContent>
             <TabsContent value="help" className="pt-3">
-              <Accordion type="single" collapsible className="w-full">
+              <Accordion className="w-full">
                 <AccordionItem value="item-1">
                   <AccordionTrigger>Where are the components defined?</AccordionTrigger>
                   <AccordionContent>

@@ -16,8 +16,6 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
-const BASE_URL = "https://public-api.etoro.com/api/v1";
-
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 type FieldType = "text" | "number" | "boolean" | "textarea";
 type FieldLocation = "path" | "query" | "body";
@@ -69,7 +67,7 @@ const endpoints: Endpoint[] = [
         placeholder: "BTC",
       },
       {
-        key: "popularityUniques7Day",
+        key: "displayname",
         label: "Display Name",
         location: "query",
         placeholder: "Amazon",
@@ -407,7 +405,7 @@ const endpoints: Endpoint[] = [
     path: "/trading/execution/demo/market-close-orders/positions/{positionId}",
     description: "Create market close order for a demo position.",
     fields: [
-      { key: "positionId", label: "Position ID", location: "path", required: true },
+      { key: "positionId", label: "Position ID", location: "body", required: true },
       {
         key: "InstrumentId",
         label: "InstrumentId",
@@ -433,7 +431,7 @@ const endpoints: Endpoint[] = [
     path: "/trading/execution/market-close-orders/positions/{positionId}",
     description: "Create market close order for a real position.",
     fields: [
-      { key: "positionId", label: "Position ID", location: "path", required: true },
+      { key: "positionId", label: "Position ID", location: "body", required: true },
       {
         key: "InstrumentId",
         label: "InstrumentId",
@@ -1044,6 +1042,63 @@ const endpoints: Endpoint[] = [
 
 const endpointMap = new Map(endpoints.map((endpoint) => [endpoint.id, endpoint]));
 
+const localApiRoutes: Record<string, string> = {
+  "market-search": "/api/etoro/market/search",
+  "market-instruments": "/api/etoro/market/instruments",
+  "market-rates": "/api/etoro/market/rates",
+  "market-closing-history": "/api/etoro/market/closing-history",
+  "market-candles": "/api/etoro/market/candles",
+  "market-exchanges": "/api/etoro/market/exchanges",
+  "market-instrument-types": "/api/etoro/market/instrument-types",
+  "market-industries": "/api/etoro/market/industries",
+  "exec-demo-open-by-amount": "/api/etoro/trading/demo/open-by-amount",
+  "exec-real-open-by-amount": "/api/etoro/trading/real/open-by-amount",
+  "exec-demo-open-by-units": "/api/etoro/trading/demo/open-by-units",
+  "exec-real-open-by-units": "/api/etoro/trading/real/open-by-units",
+  "exec-demo-cancel-open": "/api/etoro/trading/demo/cancel-open-order",
+  "exec-real-cancel-open": "/api/etoro/trading/real/cancel-open-order",
+  "exec-demo-close-position": "/api/etoro/trading/demo/close-position",
+  "exec-real-close-position": "/api/etoro/trading/real/close-position",
+  "exec-demo-cancel-close": "/api/etoro/trading/demo/cancel-close-order",
+  "exec-real-cancel-close": "/api/etoro/trading/real/cancel-close-order",
+  "exec-demo-limit-create": "/api/etoro/trading/demo/limit-order",
+  "exec-real-limit-create": "/api/etoro/trading/real/limit-order",
+  "exec-demo-limit-delete": "/api/etoro/trading/demo/delete-limit-order",
+  "exec-real-limit-delete": "/api/etoro/trading/real/delete-limit-order",
+  "info-demo-pnl": "/api/etoro/trading/demo/pnl",
+  "info-real-pnl": "/api/etoro/trading/real/pnl",
+  "info-demo-portfolio": "/api/etoro/trading/demo/portfolio",
+  "info-real-portfolio": "/api/etoro/trading/real/portfolio",
+  "info-trade-history": "/api/etoro/trading/history",
+  "watchlists-list": "/api/etoro/watchlists/list",
+  "watchlists-get-one": "/api/etoro/watchlists/get",
+  "watchlists-create": "/api/etoro/watchlists/create",
+  "watchlists-rename": "/api/etoro/watchlists/rename",
+  "watchlists-delete": "/api/etoro/watchlists/delete",
+  "watchlists-items-add": "/api/etoro/watchlists/items/add",
+  "watchlists-items-update": "/api/etoro/watchlists/items/update",
+  "watchlists-items-delete": "/api/etoro/watchlists/items/delete",
+  "watchlists-default-selected": "/api/etoro/watchlists/default-selected",
+  "watchlists-default-items": "/api/etoro/watchlists/default-items",
+  "watchlists-new-default": "/api/etoro/watchlists/new-default",
+  "watchlists-set-default": "/api/etoro/watchlists/set-default",
+  "watchlists-rank": "/api/etoro/watchlists/set-rank",
+  "watchlists-public-list": "/api/etoro/watchlists/public/list",
+  "watchlists-public-one": "/api/etoro/watchlists/public/get",
+  "feeds-instrument": "/api/etoro/feeds/instrument",
+  "feeds-user": "/api/etoro/feeds/user",
+  "feeds-post": "/api/etoro/feeds/post",
+  "curated-lists": "/api/etoro/discovery/curated-lists",
+  "market-recommendations": "/api/etoro/discovery/recommendations",
+  "pi-copiers": "/api/etoro/discovery/copiers",
+  people: "/api/etoro/users/people",
+  "people-search": "/api/etoro/users/search",
+  "people-gain": "/api/etoro/users/gain",
+  "people-daily-gain": "/api/etoro/users/daily-gain",
+  "people-portfolio-live": "/api/etoro/users/portfolio",
+  "people-tradeinfo": "/api/etoro/users/trade-info",
+};
+
 function buildInitialValues(endpoint: Endpoint): Record<string, string> {
   return endpoint.fields.reduce<Record<string, string>>((acc, field) => {
     acc[field.key] = field.defaultValue ?? "";
@@ -1078,46 +1133,7 @@ function empty(value: string | undefined): boolean {
   return !value || value.trim() === "";
 }
 
-function normalizeQueryValue(field: EndpointField, raw: string): string {
-  const trimmed = raw.trim();
-  const isCommaSeparatedField =
-    field.key === "fields" || field.label.toLowerCase().includes("comma-separated");
-
-  if (!isCommaSeparatedField) {
-    return trimmed;
-  }
-
-  // Normalize comma-separated values so URLSearchParams encodes commas consistently.
-  return trimmed
-    .split(",")
-    .map((part) => part.trim())
-    .filter((part) => part.length > 0)
-    .join(",");
-}
-
-function isCommaSeparatedField(field: EndpointField): boolean {
-  return field.key === "fields" || field.label.toLowerCase().includes("comma-separated");
-}
-
-function encodeQueryValue(field: EndpointField, value: string): string {
-  if (!isCommaSeparatedField(field)) {
-    return encodeURIComponent(value);
-  }
-
-  // eToro search endpoints expect literal commas in some list-style query params.
-  return value
-    .split(",")
-    .map((part) => encodeURIComponent(part))
-    .join(",");
-}
-
 export function ComponentExample() {
-  const [credentials, setCredentials] = React.useState({
-    apiKey: "",
-    userKey: "",
-    requestId: "",
-  });
-
   const [valuesByEndpoint, setValuesByEndpoint] = React.useState<
     Record<string, Record<string, string>>
   >(() => {
@@ -1145,9 +1161,8 @@ export function ComponentExample() {
   const runEndpoint = React.useCallback(
     async (endpointId: string) => {
       const endpoint = endpointMap.get(endpointId);
-      if (!endpoint) {
-        return;
-      }
+      const apiRoute = localApiRoutes[endpointId];
+      if (!endpoint || !apiRoute) return;
 
       const values = valuesByEndpoint[endpointId] ?? {};
 
@@ -1156,12 +1171,9 @@ export function ComponentExample() {
       setResponses((previous) => ({ ...previous, [endpointId]: null }));
 
       try {
-        if (empty(credentials.apiKey) || empty(credentials.userKey)) {
-          throw new Error("Please fill x-api-key and x-user-key first.");
-        }
-
-        let resolvedPath = endpoint.path;
-        const queryParts: string[] = [];
+        const queryParams = new URLSearchParams();
+        const bodyFields = endpoint.fields.filter((f) => f.location === "body");
+        let body: unknown;
 
         for (const field of endpoint.fields) {
           const raw = values[field.key];
@@ -1170,32 +1182,15 @@ export function ComponentExample() {
           if (field.required && valueIsEmpty) {
             throw new Error(`"${field.label}" is required.`);
           }
+          if (valueIsEmpty) continue;
 
-          if (valueIsEmpty) {
-            continue;
-          }
-
-          if (field.location === "path") {
-            resolvedPath = resolvedPath.replace(`{${field.key}}`, encodeURIComponent(raw));
-          }
-
-          if (field.location === "query") {
-            const normalizedValue = normalizeQueryValue(field, raw);
-            queryParts.push(
-              `${encodeURIComponent(field.key)}=${encodeQueryValue(field, normalizedValue)}`,
-            );
+          if (field.location === "path" || field.location === "query") {
+            queryParams.set(field.key, raw.trim());
           }
         }
-
-        if (resolvedPath.includes("{")) {
-          throw new Error("Some required path params are missing.");
-        }
-
-        const bodyFields = endpoint.fields.filter((field) => field.location === "body");
-        let body: unknown;
 
         if (bodyFields.length > 0) {
-          const rawBodyField = bodyFields.find((field) => field.key === "rawBody");
+          const rawBodyField = bodyFields.find((f) => f.key === "rawBody");
           if (rawBodyField) {
             const rawBody = values.rawBody;
             if (rawBodyField.required && empty(rawBody)) {
@@ -1204,17 +1199,9 @@ export function ComponentExample() {
             body = rawBody ? JSON.parse(rawBody) : {};
           } else {
             const payload: Record<string, unknown> = {};
-
             for (const field of bodyFields) {
               const raw = values[field.key];
-              const valueIsEmpty = empty(raw);
-
-              if (field.required && valueIsEmpty) {
-                throw new Error(`"${field.label}" is required.`);
-              }
-              if (valueIsEmpty) {
-                continue;
-              }
+              if (empty(raw)) continue;
               payload[field.key] = toTypedValue(field, raw);
             }
 
@@ -1231,16 +1218,11 @@ export function ComponentExample() {
           }
         }
 
-        const requestId = empty(credentials.requestId)
-          ? crypto.randomUUID()
-          : credentials.requestId;
-        const queryString = queryParts.join("&");
-        const url = `${BASE_URL}${resolvedPath}${queryString ? `?${queryString}` : ""}`;
+        const qs = queryParams.toString().replaceAll("%2C", ",");
+        const url = `${apiRoute}${qs ? `?${qs}` : ""}`;
 
         const headers: Record<string, string> = {
-          "x-api-key": credentials.apiKey,
-          "x-user-key": credentials.userKey,
-          "x-request-id": requestId,
+          "x-request-id": crypto.randomUUID(),
         };
 
         if (body !== undefined) {
@@ -1280,52 +1262,18 @@ export function ComponentExample() {
         setLoading((previous) => ({ ...previous, [endpointId]: false }));
       }
     },
-    [credentials.apiKey, credentials.requestId, credentials.userKey, valuesByEndpoint],
+    [valuesByEndpoint],
   );
 
   return (
     <main className="mx-auto min-h-screen w-full max-w-[1600px] space-y-6 p-4 sm:p-6 lg:p-8">
-      <Card>
-        <CardHeader>
-          <CardTitle>eToro Endpoint Playground</CardTitle>
-          <CardDescription>
-            One card per endpoint from the eToro skill. Fill credentials once, then run any
-            endpoint.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-3 md:grid-cols-3">
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium">x-api-key</label>
-            <Input
-              value={credentials.apiKey}
-              onChange={(event) =>
-                setCredentials((previous) => ({ ...previous, apiKey: event.target.value }))
-              }
-              placeholder="Public API key"
-            />
-          </div>
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium">x-user-key</label>
-            <Input
-              value={credentials.userKey}
-              onChange={(event) =>
-                setCredentials((previous) => ({ ...previous, userKey: event.target.value }))
-              }
-              placeholder="User key"
-            />
-          </div>
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium">x-request-id (optional)</label>
-            <Input
-              value={credentials.requestId}
-              onChange={(event) =>
-                setCredentials((previous) => ({ ...previous, requestId: event.target.value }))
-              }
-              placeholder="UUID (auto-generated if empty)"
-            />
-          </div>
-        </CardContent>
-      </Card>
+      <div className="space-y-1">
+        <h1 className="text-2xl font-bold tracking-tight">eToro API Playground</h1>
+        <p className="text-muted-foreground text-sm">
+          Requests are proxied through local API routes. Credentials are loaded from server
+          environment variables.
+        </p>
+      </div>
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {endpoints.map((endpoint) => {
@@ -1344,7 +1292,7 @@ export function ComponentExample() {
                 <CardDescription className="space-y-1">
                   <p>{endpoint.description}</p>
                   <code className="bg-muted inline-block rounded px-2 py-1 text-xs">
-                    {endpoint.path}
+                    {localApiRoutes[endpoint.id]}
                   </code>
                 </CardDescription>
               </CardHeader>
@@ -1363,7 +1311,6 @@ export function ComponentExample() {
                         <label className="text-xs font-medium">
                           {field.label}
                           {field.required ? " *" : ""}
-                          <span className="text-muted-foreground ml-1">({field.location})</span>
                         </label>
                         {type === "textarea" ? (
                           <Textarea
