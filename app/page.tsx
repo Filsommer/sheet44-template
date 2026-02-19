@@ -142,9 +142,11 @@ export default function Page() {
                 </CardDescription>
               </CardHeader>
               <CardFooter className="mt-auto">
-                <DialogTrigger render={<Button className="w-full" variant="secondary" />}>
-                  Start Building{" "}
-                  <HugeiconsIcon icon={BubbleChatQuestionIcon} size={18} className="ml-1" />
+                <DialogTrigger asChild>
+                  <Button className="w-full" variant="secondary">
+                    Start Building{" "}
+                    <HugeiconsIcon icon={BubbleChatQuestionIcon} size={18} className="ml-1" />
+                  </Button>
                 </DialogTrigger>
               </CardFooter>
             </Card>

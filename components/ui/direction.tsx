@@ -3,4 +3,4 @@
 export {
   DirectionProvider,
   useDirection,
-} from "@base-ui/react/direction-provider"
+} from "@radix-ui/react-direction"
