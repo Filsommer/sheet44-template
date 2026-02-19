@@ -1,12 +1,11 @@
 import { cn } from "@/lib/utils"
-import { HugeiconsIcon } from "@hugeicons/react"
-import { Loading03Icon } from "@hugeicons/core-free-icons"
+import { Loader2 } from "lucide-react"
 
-type SpinnerProps = Omit<React.ComponentProps<typeof HugeiconsIcon>, "icon" | "strokeWidth">
+type SpinnerProps = React.ComponentProps<typeof Loader2>
 
 function Spinner({ className, ...props }: SpinnerProps) {
   return (
-    <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} role="status" aria-label="Loading" className={cn("size-4 animate-spin", className)} {...props} />
+    <Loader2 strokeWidth={2} role="status" aria-label="Loading" className={cn("size-4 animate-spin", className)} {...props} />
   )
 }
 

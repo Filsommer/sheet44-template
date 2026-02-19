@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { ArrowLeft01Icon } from "@hugeicons/core-free-icons";
+import { ArrowLeft } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -59,7 +58,7 @@ export default function AppFunctionalitiesPage() {
         <div className="flex flex-col gap-4">
           <Link href="/" className="w-fit">
             <Button variant="secondary">
-              <HugeiconsIcon icon={ArrowLeft01Icon} size={18} className="mr-1" />
+              <ArrowLeft size={18} className="mr-1" />
               Back to home
             </Button>
           </Link>

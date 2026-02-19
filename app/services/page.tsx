@@ -1,8 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { ArrowLeft01Icon } from "@hugeicons/core-free-icons";
+import { ArrowLeft } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -129,7 +128,7 @@ export default function ServicesPage() {
       <header className="flex flex-col gap-4">
         <TransitionLink href="/" className="w-fit block pb-2">
           <Button variant="secondary">
-            <HugeiconsIcon icon={ArrowLeft01Icon} size={18} className="mr-1" />
+            <ArrowLeft size={18} className="mr-1" />
             Back to home
           </Button>
         </TransitionLink>

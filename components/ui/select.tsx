@@ -4,8 +4,7 @@ import * as React from "react"
 import * as SelectPrimitive from "@radix-ui/react-select"
 
 import { cn } from "@/lib/utils"
-import { HugeiconsIcon } from "@hugeicons/react"
-import { UnfoldMoreIcon, Tick02Icon, ArrowUp01Icon, ArrowDown01Icon } from "@hugeicons/core-free-icons"
+import { ChevronsUpDown, Check, ChevronUp, ChevronDown } from "lucide-react"
 
 const Select = SelectPrimitive.Root
 
@@ -41,7 +40,7 @@ function SelectTrigger({
     >
       {children}
       <SelectPrimitive.Icon asChild>
-        <HugeiconsIcon icon={UnfoldMoreIcon} strokeWidth={2} className="text-muted-foreground size-4 pointer-events-none" />
+        <ChevronsUpDown strokeWidth={2} className="text-muted-foreground size-4 pointer-events-none" />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   )
@@ -117,7 +116,7 @@ function SelectItem({
       </SelectPrimitive.ItemText>
       <span className="pointer-events-none absolute right-2 flex size-4 items-center justify-center">
         <SelectPrimitive.ItemIndicator>
-          <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} className="pointer-events-none size-4" />
+          <Check strokeWidth={2} className="pointer-events-none size-4" />
         </SelectPrimitive.ItemIndicator>
       </span>
     </SelectPrimitive.Item>
@@ -141,7 +140,7 @@ function SelectScrollUpButton({ className, ...props }: React.ComponentProps<type
       className={cn("bg-popover z-10 flex cursor-default items-center justify-center py-1 [&_svg:not([class*='size-'])]:size-4 top-0 w-full", className)}
       {...props}
     >
-      <HugeiconsIcon icon={ArrowUp01Icon} strokeWidth={2} />
+      <ChevronUp strokeWidth={2} />
     </SelectPrimitive.ScrollUpButton>
   )
 }
@@ -153,7 +152,7 @@ function SelectScrollDownButton({ className, ...props }: React.ComponentProps<ty
       className={cn("bg-popover z-10 flex cursor-default items-center justify-center py-1 [&_svg:not([class*='size-'])]:size-4 bottom-0 w-full", className)}
       {...props}
     >
-      <HugeiconsIcon icon={ArrowDown01Icon} strokeWidth={2} />
+      <ChevronDown strokeWidth={2} />
     </SelectPrimitive.ScrollDownButton>
   )
 }

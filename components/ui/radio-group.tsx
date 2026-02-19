@@ -4,8 +4,7 @@ import * as React from "react"
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group"
 
 import { cn } from "@/lib/utils"
-import { HugeiconsIcon } from "@hugeicons/react"
-import { CircleIcon } from "@hugeicons/core-free-icons"
+import { Circle } from "lucide-react"
 
 function RadioGroup({ className, ...props }: React.ComponentProps<typeof RadioGroupPrimitive.Root>) {
   return (
@@ -31,7 +30,7 @@ function RadioGroupItem({ className, ...props }: React.ComponentProps<typeof Rad
         data-slot="radio-group-indicator"
         className="group-aria-invalid/radio-group-item:text-destructive flex size-4 items-center justify-center text-white"
       >
-        <HugeiconsIcon icon={CircleIcon} strokeWidth={2} className="absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2 fill-current" />
+        <Circle strokeWidth={2} className="absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2 fill-current" />
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
   )

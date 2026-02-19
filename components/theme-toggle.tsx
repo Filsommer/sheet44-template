@@ -2,8 +2,7 @@
 
 import * as React from "react";
 import { useTheme } from "next-themes";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Moon02Icon, Sun01Icon } from "@hugeicons/core-free-icons";
+import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function ThemeToggle() {
@@ -26,7 +25,7 @@ export function ThemeToggle() {
       aria-label={mounted ? `Switch to ${isDark ? "light" : "dark"} mode` : "Toggle theme"}
       onClick={() => setTheme(isDark ? "light" : "dark")}
     >
-      <HugeiconsIcon icon={mounted && isDark ? Moon02Icon : Sun01Icon} size={16} />
+      {mounted && isDark ? <Moon size={16} /> : <Sun size={16} />}
     </Button>
   );
 }

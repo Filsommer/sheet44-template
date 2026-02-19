@@ -1,13 +1,5 @@
-import { HugeiconsIcon } from "@hugeicons/react";
-import { ArrowRight01Icon, BubbleChatQuestionIcon } from "@hugeicons/core-free-icons";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { ArrowRight, ChevronRight, MessageCircleQuestion } from "lucide-react";
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BarChartBreakdown } from "@/components/ui/breakdown-chart";
 import { BarChartMultiVertical } from "@/components/ui/bar-chart";
@@ -33,13 +25,6 @@ export default function Page() {
   return (
     <div className="bg-background flex min-h-screen flex-col items-center justify-center px-4 py-12">
       <main className="flex w-full max-w-4xl flex-col items-center gap-8">
-        {/* <div
-          className="bg-primary/10 flex h-14 w-14 shrink-0 items-center justify-center rounded-full"
-          aria-hidden
-        >
-          <HugeiconsIcon icon={WebProgrammingIcon} size={28} className="text-primary" />
-        </div> */}
-
         <div className="flex flex-col items-center gap-3 text-center">
           <div className="relative w-40 h-full mx-auto flex items-center justify-center">
             <svg version="1.1" viewBox="0 0 156 49" xmlns="http://www.w3.org/2000/svg">
@@ -97,7 +82,7 @@ export default function Page() {
               <TransitionLink href="/services" className="w-full">
                 <Button className="w-full" variant="secondary">
                   View available data
-                  <HugeiconsIcon icon={ArrowRight01Icon} size={18} className="ml-1" />
+                  <ChevronRight size={18} className="ml-1" />
                 </Button>
               </TransitionLink>
             </CardFooter>
@@ -124,7 +109,7 @@ export default function Page() {
               <TransitionLink href="/funcionalities" className="w-full">
                 <Button className="w-full" variant="secondary">
                   View functionalities
-                  <HugeiconsIcon icon={ArrowRight01Icon} size={18} className="ml-1" />
+                  <ChevronRight size={18} className="ml-1" />
                 </Button>
               </TransitionLink>
             </CardFooter>
@@ -144,8 +129,7 @@ export default function Page() {
               <CardFooter className="mt-auto">
                 <DialogTrigger asChild>
                   <Button className="w-full" variant="secondary">
-                    Start Building{" "}
-                    <HugeiconsIcon icon={BubbleChatQuestionIcon} size={18} className="ml-1" />
+                    Start Building <MessageCircleQuestion size={18} className="ml-1" />
                   </Button>
                 </DialogTrigger>
               </CardFooter>
