@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { extractCredentials, searchPeople } from "@/lib/etoro";
+import type { GetUsersSearchResponse, EtoroApiErrorResponse } from "./types";
 
-export async function GET(request: Request) {
+export async function GET(request: Request): Promise<NextResponse<GetUsersSearchResponse | EtoroApiErrorResponse>> {
   try {
     const credentials = extractCredentials(request);
     const { searchParams } = new URL(request.url);
@@ -20,7 +21,7 @@ export async function GET(request: Request) {
       instrumentId: searchParams.has("instrumentId") ? Number(searchParams.get("instrumentId")) : undefined,
       isTestAccount: searchParams.has("isTestAccount") ? searchParams.get("isTestAccount") === "true" : undefined,
     });
-    return NextResponse.json(result);
+    return NextResponse.json(result as GetUsersSearchResponse);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Request failed.";
     return NextResponse.json({ error: message }, { status: 400 });

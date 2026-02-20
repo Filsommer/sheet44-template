@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { extractCredentials, updateWatchlistItems } from "@/lib/etoro";
+import type { EtoroApiErrorResponse, WatchlistItemDto } from "./types";
 
-export async function PUT(request: Request): Promise<NextResponse<{ error: string } | null>> {
+export async function PUT(request: Request): Promise<NextResponse<null | EtoroApiErrorResponse>> {
   try {
     const credentials = extractCredentials(request);
     const { searchParams } = new URL(request.url);
@@ -9,7 +10,7 @@ export async function PUT(request: Request): Promise<NextResponse<{ error: strin
     if (!watchlistId) {
       return NextResponse.json({ error: "watchlistId is required." }, { status: 400 });
     }
-    const items = await request.json();
+    const items: WatchlistItemDto[] = await request.json();
     await updateWatchlistItems(credentials, watchlistId, items);
     return new NextResponse(null, { status: 204 });
   } catch (error) {

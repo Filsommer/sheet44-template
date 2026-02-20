@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
 import { extractCredentials, getInstrumentsMetadata } from "@/lib/etoro";
+import type { GetMarketInstrumentsResponse, EtoroApiErrorResponse } from "./types";
 
 function toNumberArray(value: string | null): number[] | undefined {
   if (!value) return undefined;
   return value.split(",").map(Number).filter((n) => !Number.isNaN(n));
 }
 
-export async function GET(request: Request) {
+export async function GET(request: Request): Promise<NextResponse<GetMarketInstrumentsResponse | EtoroApiErrorResponse>> {
   try {
     const credentials = extractCredentials(request);
     const { searchParams } = new URL(request.url);
@@ -16,7 +17,7 @@ export async function GET(request: Request) {
       stocksIndustryIds: toNumberArray(searchParams.get("stocksIndustryIds")),
       instrumentTypeIds: toNumberArray(searchParams.get("instrumentTypeIds")),
     });
-    return NextResponse.json(result);
+    return NextResponse.json(result as GetMarketInstrumentsResponse);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Request failed.";
     return NextResponse.json({ error: message }, { status: 400 });

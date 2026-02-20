@@ -1,22 +1,9 @@
 import { NextResponse } from "next/server";
 import { extractCredentials, getInstrumentFeed } from "@/lib/etoro";
+import type { InstrumentFeedResponse, EtoroApiErrorResponse } from "./types";
 
-type FeedPagination = {
-  total: number;
-  hasMore: boolean;
-};
 
-type InstrumentFeedResponse = {
-  ok: boolean;
-  status: number;
-  statusText: string;
-  data: {
-    posts: Record<string, unknown>[];
-    pagination: FeedPagination;
-  };
-};
-
-export async function GET(request: Request): Promise<NextResponse<InstrumentFeedResponse | { error: string }>> {
+export async function GET(request: Request): Promise<NextResponse<InstrumentFeedResponse | EtoroApiErrorResponse>> {
   try {
     const credentials = extractCredentials(request);
     const { searchParams } = new URL(request.url);

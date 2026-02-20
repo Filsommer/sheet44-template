@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { extractCredentials, cancelCloseOrder } from "@/lib/etoro";
+import type { DeleteTradingRealCancelCloseOrderResponse, EtoroApiErrorResponse } from "./types";
 
-export async function DELETE(request: Request) {
+export async function DELETE(request: Request): Promise<NextResponse<DeleteTradingRealCancelCloseOrderResponse | EtoroApiErrorResponse>> {
   try {
     const credentials = extractCredentials(request);
     const { searchParams } = new URL(request.url);
@@ -10,7 +11,7 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: "orderId is required." }, { status: 400 });
     }
     const result = await cancelCloseOrder(credentials, orderId, false);
-    return NextResponse.json(result);
+    return NextResponse.json(result as DeleteTradingRealCancelCloseOrderResponse);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Request failed.";
     return NextResponse.json({ error: message }, { status: 400 });

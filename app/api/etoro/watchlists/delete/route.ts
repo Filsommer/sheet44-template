@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { extractCredentials, deleteWatchlist } from "@/lib/etoro";
+import type { EtoroApiErrorResponse } from "./types";
 
-export async function DELETE(request: Request): Promise<NextResponse<{ error: string } | null>> {
+export async function DELETE(request: Request): Promise<NextResponse<null | EtoroApiErrorResponse>> {
   try {
     const credentials = extractCredentials(request);
     const { searchParams } = new URL(request.url);

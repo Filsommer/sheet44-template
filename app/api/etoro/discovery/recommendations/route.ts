@@ -1,19 +1,11 @@
 import { NextResponse } from "next/server";
 import { extractCredentials, getMarketRecommendations } from "@/lib/etoro";
+import type { MarketRecommendationsResponse, EtoroApiErrorResponse } from "./types";
 
-type MarketRecommendationsResponse = {
-  ok: boolean;
-  status: number;
-  statusText: string;
-  data: {
-    ResponseType: "Instrument";
-    Recommendations: number[];
-  };
-};
 
 export async function GET(
   request: Request,
-): Promise<NextResponse<MarketRecommendationsResponse | { error: string }>> {
+): Promise<NextResponse<MarketRecommendationsResponse | EtoroApiErrorResponse>> {
   try {
     const credentials = extractCredentials(request);
     const { searchParams } = new URL(request.url);

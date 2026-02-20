@@ -1,28 +1,9 @@
 import { NextResponse } from "next/server";
 import { extractCredentials, getCuratedLists } from "@/lib/etoro";
+import type { CuratedListsResponse, EtoroApiErrorResponse } from "./types";
 
-type CuratedListItem = {
-  instrumentId: number;
-};
 
-type CuratedList = {
-  uuid: string;
-  name: string;
-  description: string;
-  listImageUrl: string;
-  items: CuratedListItem[];
-};
-
-type CuratedListsResponse = {
-  ok: boolean;
-  status: number;
-  statusText: string;
-  data: {
-    curatedLists: CuratedList[];
-  };
-};
-
-export async function GET(request: Request): Promise<NextResponse<CuratedListsResponse | { error: string }>> {
+export async function GET(request: Request): Promise<NextResponse<CuratedListsResponse | EtoroApiErrorResponse>> {
   try {
     const credentials = extractCredentials(request);
     const result = await getCuratedLists(credentials);

@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { extractCredentials, getUserDailyGain } from "@/lib/etoro";
+import type { GetUsersDailyGainResponse, EtoroApiErrorResponse } from "./types";
 
-export async function GET(request: Request) {
+export async function GET(request: Request): Promise<NextResponse<GetUsersDailyGainResponse | EtoroApiErrorResponse>> {
   try {
     const credentials = extractCredentials(request);
     const { searchParams } = new URL(request.url);
@@ -13,7 +14,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "username, minDate, maxDate, and type are required." }, { status: 400 });
     }
     const result = await getUserDailyGain(credentials, username, { minDate, maxDate, type });
-    return NextResponse.json(result);
+    return NextResponse.json(result as GetUsersDailyGainResponse);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Request failed.";
     return NextResponse.json({ error: message }, { status: 400 });

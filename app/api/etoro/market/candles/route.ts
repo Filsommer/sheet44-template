@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { extractCredentials, getCandles } from "@/lib/etoro";
+import type { GetMarketCandlesResponse, EtoroApiErrorResponse } from "./types";
 
-export async function GET(request: Request) {
+export async function GET(request: Request): Promise<NextResponse<GetMarketCandlesResponse | EtoroApiErrorResponse>> {
   try {
     const credentials = extractCredentials(request);
     const { searchParams } = new URL(request.url);
@@ -18,7 +19,7 @@ export async function GET(request: Request) {
       interval,
       candlesCount: Number(candlesCount),
     });
-    return NextResponse.json(result);
+    return NextResponse.json(result as GetMarketCandlesResponse);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Request failed.";
     return NextResponse.json({ error: message }, { status: 400 });

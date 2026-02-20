@@ -1,43 +1,9 @@
 import { NextResponse } from "next/server";
 import { extractCredentials, getPublicWatchlists } from "@/lib/etoro";
+import type { PublicWatchlistsResponse, EtoroApiErrorResponse } from "./types";
 
-type WatchlistItem = {
-  ItemId: number;
-  ItemType: string;
-  ItemRank: number;
-};
 
-type Watchlist = {
-  WatchlistId: string;
-  Name: string;
-  Gcid: number;
-  WatchlistType: "Static" | "Dynamic";
-  TotalItems: number;
-  IsDefault: boolean;
-  IsUserSelectedDefault: boolean;
-  WatchlistRank: number;
-  DynamicUrl: string;
-  Items: WatchlistItem[];
-  RelatedAssets: number[];
-};
-
-type WatchlistsMetadata = {
-  totalCount: number;
-  maxItemsInWatchlist: number;
-  maxWatchlistPerUser: number;
-};
-
-type PublicWatchlistsResponse = {
-  ok: boolean;
-  status: number;
-  statusText: string;
-  data: {
-    watchlists: Watchlist[];
-    metadata: WatchlistsMetadata;
-  };
-};
-
-export async function GET(request: Request): Promise<NextResponse<PublicWatchlistsResponse | { error: string }>> {
+export async function GET(request: Request): Promise<NextResponse<PublicWatchlistsResponse | EtoroApiErrorResponse>> {
   try {
     const credentials = extractCredentials(request);
     const { searchParams } = new URL(request.url);
