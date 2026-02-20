@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { extractCredentials, setWatchlistRank } from "@/lib/etoro";
 
-export async function PUT(request: Request) {
+export async function PUT(request: Request): Promise<NextResponse<{ error: string } | null>> {
   try {
     const credentials = extractCredentials(request);
     const { searchParams } = new URL(request.url);
@@ -10,8 +10,8 @@ export async function PUT(request: Request) {
     if (!watchlistId || !newRank) {
       return NextResponse.json({ error: "watchlistId and newRank are required." }, { status: 400 });
     }
-    const result = await setWatchlistRank(credentials, watchlistId, Number(newRank));
-    return NextResponse.json(result);
+    await setWatchlistRank(credentials, watchlistId, Number(newRank));
+    return new NextResponse(null, { status: 204 });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Request failed.";
     return NextResponse.json({ error: message }, { status: 400 });

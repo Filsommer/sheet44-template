@@ -1,7 +1,20 @@
 import { NextResponse } from "next/server";
 import { extractCredentials, getDefaultWatchlistItems } from "@/lib/etoro";
 
-export async function GET(request: Request) {
+type WatchlistItem = {
+  ItemId: number;
+  ItemType: string;
+  ItemRank: number;
+};
+
+type DefaultWatchlistItemsResponse = {
+  ok: boolean;
+  status: number;
+  statusText: string;
+  data: WatchlistItem[];
+};
+
+export async function GET(request: Request): Promise<NextResponse<DefaultWatchlistItemsResponse | { error: string }>> {
   try {
     const credentials = extractCredentials(request);
     const { searchParams } = new URL(request.url);
@@ -9,7 +22,7 @@ export async function GET(request: Request) {
       itemsLimit: searchParams.has("itemsLimit") ? Number(searchParams.get("itemsLimit")) : undefined,
       itemsPerPage: searchParams.has("itemsPerPage") ? Number(searchParams.get("itemsPerPage")) : undefined,
     });
-    return NextResponse.json(result);
+    return NextResponse.json(result as DefaultWatchlistItemsResponse);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Request failed.";
     return NextResponse.json({ error: message }, { status: 400 });

@@ -1,7 +1,22 @@
 import { NextResponse } from "next/server";
 import { extractCredentials, getInstrumentFeed } from "@/lib/etoro";
 
-export async function GET(request: Request) {
+type FeedPagination = {
+  total: number;
+  hasMore: boolean;
+};
+
+type InstrumentFeedResponse = {
+  ok: boolean;
+  status: number;
+  statusText: string;
+  data: {
+    posts: Record<string, unknown>[];
+    pagination: FeedPagination;
+  };
+};
+
+export async function GET(request: Request): Promise<NextResponse<InstrumentFeedResponse | { error: string }>> {
   try {
     const credentials = extractCredentials(request);
     const { searchParams } = new URL(request.url);
@@ -16,7 +31,7 @@ export async function GET(request: Request) {
       badgesExperimentIsEnabled: searchParams.has("badgesExperimentIsEnabled") ? searchParams.get("badgesExperimentIsEnabled") === "true" : undefined,
       reactionsPageSize: searchParams.has("reactionsPageSize") ? Number(searchParams.get("reactionsPageSize")) : undefined,
     });
-    return NextResponse.json(result);
+    return NextResponse.json(result as InstrumentFeedResponse);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Request failed.";
     return NextResponse.json({ error: message }, { status: 400 });
